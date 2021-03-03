@@ -1,0 +1,33 @@
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #2E3440;
+
+
+}
+
+body {
+	-webkit-user-select: none;
+	color: #D8DEE9;
+	margin: 0;
+	padding: 8px;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.footer {
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25px;
+	transition: 0.3s;
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+}
+.footer:hover{
+	background-color: #292929;
+	box-shadow: 0px -2px 20px 17px #292929;
+	color: white;
+}
