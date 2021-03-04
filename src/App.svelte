@@ -25,9 +25,3 @@
 {#if activeHosts.length < 4}
   <Foot />
 {/if}
-<!-- <Header></Header> -->
-<!-- <Host host="192.168.0.2" updateTime="1000" getReq="true" />
-<Host host="192.168.0.3" updateTime="1000" getReq="true" />
-<Host host="192.168.0.4" updateTime="1000" getReq="false" />
-<Host host="192.168.0.114" updateTime="1000" getReq="false" />
-<Host host="google.com" updateTime="1000" getReq="true" /> -->
