@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow, dialog, globalShortcut, Notification } = require('electron');
+
 const path = require('path');
 const serve = require('electron-serve');
 const loadURL = serve({ directory: 'public' });
@@ -29,6 +30,8 @@ function createWindow() {
     });
     mainWindow.removeMenu()
     mainWindow.webContents.openDevTools()
+    mainWindow.setAlwaysOnTop(true, 'screen');
+
     // This block of code is intended for development purpose only.
     // Delete this entire block of code when you are ready to package the application.
     if (isDev()) {
@@ -78,3 +81,26 @@ app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function showNotification(title, body) {
+  const notification = {
+    title: title,
+    body: body
+  }
+  new Notification(notification).show()
+}
+app.whenReady().then(createWindow).then(showNotification)
+
+app.whenReady().then(() => {
+  globalShortcut.register('Meta+CommandOrControl+T', () => {
+      if (mainWindow.isAlwaysOnTop()) {
+          mainWindow.setAlwaysOnTop(false)
+          showNotification('Always On Top', 'IntCon is no longer on top')
+      } else {
+          mainWindow.setAlwaysOnTop(true, 'screen');
+          showNotification('Always On Top', 'IntCon is now on top.')
+
+      }
+      
+  })
+}).then(createWindow)
