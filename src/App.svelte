@@ -3,24 +3,23 @@
   import Foot from "./Footer.svelte";
   import Host from "./Pingger.svelte";
   import { onMount } from "svelte";
-  import hostList from "./hosts.js";
 
   //populating hostd list from a store.
-  var activeHosts = [];
+  $: activeHosts = [];
   function findHosts() {
-    hostList.find({ active: true }, function (err, docs) {
-      activeHosts = docs;
-    });
+    activeHosts = JSON.parse(localStorage.getItem("hosts"))
   }
   onMount(findHosts);
 </script>
 
 {#each activeHosts as activeHost}
-  <Host
-    host={activeHost.host}
-    updateTime={activeHost.updateTime}
-    getReq={activeHost.getReq}
-  />
+  {#if activeHost.active == true}
+    <Host
+      host={activeHost.host}
+      updateTime={activeHost.pingTime}
+      getReq={activeHost.getReq}
+    />
+  {/if}
 {/each}
 {#if activeHosts.length < 4}
   <Foot />

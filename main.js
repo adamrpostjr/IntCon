@@ -34,7 +34,6 @@ function createWindow() {
     // Delete this entire block of code when you are ready to package the application.
     if (isDev()) {
         mainWindow.loadURL('http://localhost:5000/');
-        mainWindow.webContents.openDevTools()
     } else {
         loadURL(mainWindow);
     }
@@ -43,8 +42,8 @@ function createWindow() {
     // loadURL(mainWindow);
 
     // Open the DevTools and also disable Electron Security Warning.
-    // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
-    // mainWindow.webContents.openDevTools();
+    process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
+    mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
