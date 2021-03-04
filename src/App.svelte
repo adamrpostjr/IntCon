@@ -22,7 +22,9 @@
     getReq={activeHost.getReq}
   />
 {/each}
-
+{#if activeHosts.length < 4}
+  <Foot />
+{/if}
 <!-- <Header></Header> -->
 <!-- <Host host="192.168.0.2" updateTime="1000" getReq="true" />
 <Host host="192.168.0.3" updateTime="1000" getReq="true" />
