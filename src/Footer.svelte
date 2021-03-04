@@ -13,7 +13,7 @@
   }
 
   onMount(findHosts);
-  function toggle(params) {
+  function toggle() {
     addNew.active = !addNew.active;
   }
 </script>
@@ -42,11 +42,11 @@
 {/if}
 
 {#if !addNew.active}
-  <main on:click={toggle}>+</main>
+  <add class="add" on:click={toggle}>+</add>
 {/if}
 
 <style>
-  main {
+  .add {
     text-align: center;
     width: 100%;
     height: 15%;
@@ -57,7 +57,7 @@
     border-radius: 10px;
     color: #f5f5f514;
   }
-  main:hover {
+  .add:hover {
     color: #d8dee9;
     border: 1px solid #d8dee9;
   }

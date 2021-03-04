@@ -131,17 +131,25 @@
     });
   }
   onMount(drawChart);
+  var remove = { active: false };
+  function toggle() {
+    remove.active = !remove.active;
+  }
 </script>
 
 <div>
-  <canvas id="myChart-{host}" width="278" height="112" />
-  {#if getReq == "true"}
-    <span class="httpStatus">
-      HTTP Status:
-      <SvelteTooltip tip={toolTip} right color="lime">
-        <span class={httpStatus} id="httpCode" />
-      </SvelteTooltip>
-    </span>
+  {#if remove.active}
+    <remove class="remove" on:click={toggle}>X</remove>
+  {:else}
+    <canvas id="myChart-{host}" width="278" height="112" />
+    {#if getReq == "true"}
+      <span class="httpStatus">
+        HTTP Status:
+        <SvelteTooltip tip={toolTip} right color="lime">
+          <span class={httpStatus} id="httpCode" />
+        </SvelteTooltip>
+      </span>
+    {/if}
   {/if}
 </div>
 
@@ -169,5 +177,20 @@
   }
   .f {
     background: red;
+  }
+  .remove {
+    text-align: center;
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #f5f5f514;
+    border-radius: 10px;
+    color: #f5f5f514;
+  }
+  .remove:hover {
+    color: #d8dee9;
+    border: 1px solid #d8dee9;
   }
 </style>
