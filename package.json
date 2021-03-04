@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "chart.js": "^2.9.4",
-    "electron-json-storage": "^4.4.0",
     "electron-serve": "^1.0.0",
+    "nedb": "^1.8.0",
     "node-fetch": "^2.6.1",
     "ping": "^0.4.0",
     "svelte-tooltip": "^1.2.0",

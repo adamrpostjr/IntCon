@@ -29,13 +29,12 @@ function createWindow() {
         show: false
     });
     mainWindow.removeMenu()
-    mainWindow.webContents.openDevTools()
-    mainWindow.setAlwaysOnTop(true, 'screen');
-
+    
     // This block of code is intended for development purpose only.
     // Delete this entire block of code when you are ready to package the application.
     if (isDev()) {
         mainWindow.loadURL('http://localhost:5000/');
+        mainWindow.webContents.openDevTools()
     } else {
         loadURL(mainWindow);
     }
@@ -89,7 +88,6 @@ function showNotification(title, body) {
   }
   new Notification(notification).show()
 }
-app.whenReady().then(createWindow).then(showNotification)
 
 app.whenReady().then(() => {
   globalShortcut.register('Meta+CommandOrControl+T', () => {
@@ -99,8 +97,7 @@ app.whenReady().then(() => {
       } else {
           mainWindow.setAlwaysOnTop(true, 'screen');
           showNotification('Always On Top', 'IntCon is now on top.')
-
       }
-      
   })
 }).then(createWindow)
+
