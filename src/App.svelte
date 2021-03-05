@@ -11,16 +11,15 @@
   }
   onMount(findHosts);
 </script>
-
 {#each activeHosts as activeHost}
-  {#if activeHost.active == true}
-    <Host
-      host={activeHost.host}
-      updateTime={activeHost.pingTime}
-      getReq={activeHost.getReq}
-    />
-  {/if}
+{#if activeHost.active}
+<Host on:message={findHosts}
+host={activeHost.host}
+updateTime={activeHost.pingTime}
+getReq={activeHost.getReq}
+/>
+{/if}
 {/each}
-{#if activeHosts.length < 4}
-  <Foot />
+{#if activeHosts.length < 6}
+  <Foot on:message={findHosts}/>
 {/if}

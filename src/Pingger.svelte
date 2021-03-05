@@ -7,7 +7,9 @@
   import { onMount } from "svelte";
   import SvelteTooltip from "svelte-tooltip";
   const fetch = require("node-fetch");
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
   var hostChart;
   var httpStatus = "n";
 
@@ -29,7 +31,7 @@
   }
   doPing();
 
-  if (getReq == "true") {
+  if (getReq == true) {
     function checkStatus(res) {
       if (res.ok) {
         httpStatus = "p";
@@ -134,15 +136,34 @@
   var remove = { active: false };
   function toggle() {
     remove.active = !remove.active;
+    if(remove.active == true){
+      document.getElementById('myChart-'+host).style.display = 'none'
+    }else{
+      document.getElementById('myChart-'+host).style.display = 'block'
+    }
   }
+  function delHost() {
+    var hostList = JSON.parse(localStorage.getItem("hosts"))
+    for (let i = 0; i < hostList.length; i++) {
+      if(hostList[i].host.toString().toLowerCase() == host.toString().toLowerCase()) {
+        hostList.splice(i, 1)
+      }
+    }
+    localStorage.setItem('hosts', JSON.stringify(hostList))
+    dispatch('message', {
+      text: 'update'
+    });
+  }
+
 </script>
 
-<div>
+<div on:contextmenu={toggle}>
   {#if remove.active}
-    <remove class="remove" on:click={toggle}>X</remove>
-  {:else}
+    <remove class="remove left" on:click={delHost}>Remove</remove>
+    <remove class="remove right" on:click={toggle}>Cancel</remove>
+  {/if}
     <canvas id="myChart-{host}" width="278" height="112" />
-    {#if getReq == "true"}
+    {#if getReq == true}
       <span class="httpStatus">
         HTTP Status:
         <SvelteTooltip tip={toolTip} right color="lime">
@@ -150,10 +171,12 @@
         </SvelteTooltip>
       </span>
     {/if}
-  {/if}
 </div>
 
 <style>
+  div{
+    margin-bottom: 5px; 
+  }
   .httpStatus {
     font-size: 12px;
     position: relative;
@@ -180,8 +203,8 @@
   }
   .remove {
     text-align: center;
-    width: 100%;
-    height: 15%;
+    width: 48%;
+    height: 114px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -192,5 +215,11 @@
   .remove:hover {
     color: #d8dee9;
     border: 1px solid #d8dee9;
+  }
+  .remove.left{
+    float: left
+  }
+  .remove.right{
+    float: right
   }
 </style>

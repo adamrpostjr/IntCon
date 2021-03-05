@@ -1,28 +1,13 @@
 <script>
   import { onMount } from "svelte";
   import * as yup from 'yup';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
   var addNew = { active: false };
-  var hosts = JSON.parse(localStorage.getItem("hosts"))
-  //populating inactive hostlist from store
-  $: inactiveHosts = [];
-  function findHosts() {
-    for (let i = 0; i < hosts.length; i++) {
-      if (hosts[i].active == false) {
-        inactiveHosts.push(hosts[i])
-      }
-    }
+  function toggle() {
+    addNew.active = !addNew.active;
   }
-  onMount(findHosts);
-  
-  function mountObjects() {
-    var existing = document.getElementById('existing')
-    var httpOrS = document.getElementById('httpOrS')
-    var hostname = document.getElementById('hostname')
-    var pingTime = document.getElementById('pingTime')
-    var httpStatus = document.getElementById('httpStatus')
-  }
-  onMount(mountObjects)
 
   let properHost = yup.object().shape({
     http: yup.string().matches(/(http:\/\/|https:\/\/)/).required(),
@@ -31,25 +16,11 @@
     get: yup.number().required()
   })
 
-  function toggle() {
-    addNew.active = !addNew.active;
-  }
-  function addHost() {
-    // console.log(hostList);
-    if (existing.value >= 1) {
-      addExistingHost()
-    }else{
-      addNewHost()
-    }
-  }
-  function addExistingHost() {
-    console.log('existing');
-  }
   async function addNewHost() {
-    let http // this is the way to get request
-    let host = hostname.value
-    let ping = pingTime.value
-    let get
+    var http // this is the way to get request
+    var host = hostname.value
+    var ping = pingTime.value
+    var get 
     httpOrS.value == 1 ? http = 'https://' : http = 'http://'
     httpStatus.checked ? get = '1' : get = '0'
 
@@ -60,43 +31,51 @@
       ping: ping,
       get: get
     })
-  .then(function (valid) {
-    // valid; // => true
-    console.log(valid);
-    hostList.insert({http: http, host: host, pingTime: ping, getReq: get, active: true}, function (err, newDocs) {
-        console.log(newDocs);
-        console.log(err);
-      });
-
-  });
-    
-    
+    .then(function (valid) {
+      if(!valid) throw('not valid')
+    })
+    .then(function () {
+      var hostList = JSON.parse(localStorage.getItem("hosts"))
+      for (let i = 0; i < hostList.length; i++) {
+        if(hostList[i].host.toString().toLowerCase() == host.toString().toLowerCase()) {
+          throw ('have it');
+        }
+      }
+      hostList.push({http: http, host: host, pingTime: ping, getReq: get, active: true})
+      localStorage.setItem('hosts', JSON.stringify(hostList))
+      dispatch('message', {
+			  text: 'update'
+		  });
+    }).then(function () {
+      toggle()
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
   }
-  $: zeroActive = false
+  function mountObjects() {
+    
+    var httpOrS = document.getElementById('httpOrS')
+    var hostname = document.getElementById('hostname')
+    var pingTime = document.getElementById('pingTime')
+    var httpStatus = document.getElementById('httpStatus')
+  }
+  onMount(mountObjects)
 </script>
 
 {#if addNew.active}
   <div>
-    <select name="existing" id="existing">
-      <option value="0" selected>Choose an Existing Host</option>
-      {#each inactiveHosts as inactiveHost}
-        <option value={inactiveHost}>{inactiveHost}</option>
-      {/each}
-    </select><br />
-    {#if zeroActive == true}
-      <hr />
-      <select name="httpOrS" id="httpOrS">
-        <option value="0">http://</option>
-        <option value="1">https://</option>
-      </select>
-      <input id="hostname" type="text" placeholder="hostname" /><br />
-      <label for="number">Ping Time In ms</label><br />
-      <input id="pingTime" type="number" step="1000" value="1000" /><br />
-      <label for="checkbox">HTTP status</label>
-      <input id="httpStatus" type="checkbox" /><br />
-      <button on:click={toggle}>Cancel</button>
-      <button on:click="{addHost}">Add</button>
-    {/if}
+    <select name="httpOrS" id="httpOrS">
+      <option value="0">http://</option>
+      <option value="1">https://</option>
+    </select>
+    <input id="hostname" type="text" placeholder="hostname" /><br />
+    <label for="number">Ping Time In ms</label><br />
+    <input id="pingTime" type="number" step="1000" value="1000" /><br />
+    <label for="checkbox">HTTP status</label>
+    <input id="httpStatus" type="checkbox" /><br />
+    <button on:click={toggle}>Cancel</button>
+    <button on:click="{addNewHost}">Add</button>
   </div>
 {/if}
 
