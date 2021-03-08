@@ -47,7 +47,7 @@
         .catch(checkStatus);
       setTimeout(() => {
         doGet();
-      }, 600000);
+      }, 180000);
     }
     doGet();
   }
@@ -215,6 +215,7 @@
   .remove:hover {
     color: #d8dee9;
     border: 1px solid #d8dee9;
+    cursor: pointer;
   }
   .remove.left{
     float: left

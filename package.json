@@ -1,6 +1,6 @@
 {
   "name": "IntCon",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple ping ping client.",
   "main": "main.js",
   "author": "Adam Post <adam@postalproduction.com>",

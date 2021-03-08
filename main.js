@@ -19,6 +19,8 @@ function createWindow() {
         width: 300,
         height: 725,
         resizable: false,
+        // frame: false,
+        // transparent: true,
         webPreferences: {
             nodeIntegration: true
         },
@@ -57,7 +59,7 @@ function createWindow() {
     // This helps in showing the window gracefully.
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
-        mainWindow.webContents.openDevTools();
+        // mainWindow.webContents.openDevTools();
     });
 }
 

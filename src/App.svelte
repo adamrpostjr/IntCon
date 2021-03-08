@@ -1,5 +1,5 @@
 <script>
-  import Header from "./Header.svelte";
+  // import Header from "./Header.svelte";
   import Foot from "./Footer.svelte";
   import Host from "./Pingger.svelte";
   import { onMount } from "svelte";
@@ -11,6 +11,8 @@
   }
   onMount(findHosts);
 </script>
+
+<!-- <Header/> -->
 {#each activeHosts as activeHost}
 {#if activeHost.active}
 <Host on:message={findHosts}

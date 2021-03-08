@@ -69,7 +69,7 @@
       <option value="0">http://</option>
       <option value="1">https://</option>
     </select>
-    <input id="hostname" type="text" placeholder="hostname" /><br />
+    <input id="hostname" type="text" placeholder="FQDN or IP" /><br />
     <label for="number">Ping Time In ms</label><br />
     <input id="pingTime" type="number" step="1000" value="1000" /><br />
     <label for="checkbox">HTTP status</label>
@@ -98,5 +98,6 @@
   .add:hover {
     color: #d8dee9;
     border: 1px solid #d8dee9;
+    cursor: pointer;
   }
 </style>
